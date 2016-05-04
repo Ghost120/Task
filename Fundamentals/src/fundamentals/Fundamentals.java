@@ -28,7 +28,9 @@ public class Fundamentals {
         //task19();//доделать
         //task20();
         //task21();
-        task23();
+        //task23();
+        //task24();
+        task25();
     }
 
     private static String[] consoleReader() {
@@ -485,11 +487,12 @@ public class Fundamentals {
                 }
             }
         }
+        //System.out.println(Arrays.toString(minMas));
         
         for (int j = 0; j < n; j++) {
             tmp=false;
             for (int i = 0; i < n; i++) {
-                if (minMas[j] < matr[i][j]) {
+                if (matr[i][minMas[j]] < matr[i][j]) {
                     tmp =true;
                 }     
                
@@ -497,9 +500,44 @@ public class Fundamentals {
             if(tmp==false){sedlo+=1;}
         }
 
-        for (int i = 0; i < n; i++) {
-            System.out.println("minJ= " + minMas[i]);
-        }
+       
         System.out.println("sedlo= "+sedlo);
     }
+    
+    private static void task24(){
+        System.out.println("24. Перестроить матрицу, переставляя в ней строки так,"
+                + " чтобы сумма элементов в строках полученной матрицы возрастала");
+        
+       int[][] matr= getMatrix();
+       printMatr(matr);
+       Comparator<int[]> comparator = new Comparator<int[]>() {
+
+            public int compare(int[] o1, int[] o2) {
+                int a1 = 0;
+                int a2 = 0;
+                for(int i = 0; i < o1.length; i++){
+                    a1 += o1[i];
+                    a2 += o2[i];
+                }
+                if (a1 < a2) return -1;
+                if (a1 > a2) return 1;
+                return 0;
+            }
+        };
+       Arrays.sort(matr, comparator);
+        System.out.println("");
+       printMatr(matr);
+        
+    }
+    
+    private static void task25(){
+        System.out.println("25. Найти число локальных минимумов. (Соседями элемента"+"\n"
+                + " матрицы назовем элементы, имеющие с ним общую сторону или угол."+"\n"
+                + " Элемент матрицы называется локальным минимумом, если он строго"+"\n"
+                + " меньше всех своих соседей.)");
+        
+        
+        
+    }
+    
 }
