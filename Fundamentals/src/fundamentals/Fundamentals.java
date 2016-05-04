@@ -30,7 +30,9 @@ public class Fundamentals {
         //task21();
         //task23();
         //task24();
-        task25();
+        //task25();
+        //task26();
+        //task27();
     }
 
     private static String[] consoleReader() {
@@ -535,8 +537,42 @@ public class Fundamentals {
                 + " матрицы назовем элементы, имеющие с ним общую сторону или угол."+"\n"
                 + " Элемент матрицы называется локальным минимумом, если он строго"+"\n"
                 + " меньше всех своих соседей.)");
+         
+    }
+    private static void task26(){
+        System.out.println("26. Найти наибольший среди локальных максимумов. "+"\n"
+                + "(Элемент матрицы называется локальным максимумом, если он "+"\n"
+                + "строго больше всех своих соседей.)");
+        int[][] matr= getMatrix();
+        printMatr(matr);
         
         
+    }
+    
+    private static void task27(){
+        System.out.println("27. Перестроить заданную матрицу, переставляя в ней "
+                + "столбцы так, чтобы значения их характеристик убывали. (Характеристикой "+"\n"
+                + "столбца прямоугольной матрицы называется сумма модулей его элементов).");
+        
+        int[][] matr= getMatrix();
+       printMatr(matr);
+       Comparator<int[]> comparator = new Comparator<int[]>() {
+
+            public int compare(int[] o1, int[] o2) {
+                int a1 = 0;
+                int a2 = 0;
+                for(int i = 0; i < o1.length; i++){
+                    a1 += Math.abs(o1[i]);
+                    a2 += Math.abs(o2[i]);
+                }
+                if (a1 > a2) return -1;
+                if (a1 < a2) return 1;
+                return 0;
+            }
+        };
+       Arrays.sort(matr, comparator);
+        System.out.println("");
+       printMatr(matr);
         
     }
     
