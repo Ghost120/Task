@@ -12,14 +12,15 @@ import java.util.Scanner;
  */
 public class Fundamentals {
 
-    private static int n = 1;
+    private static int n = 2;
 
     public static void main(String[] args) {
         //task3();
         //task11();
         //task22();
         //task16();
-        task6();
+        task5();
+        //task6();
         //task7();
         //task8();
         //task9();
@@ -892,22 +893,48 @@ public class Fundamentals {
         str = str.trim();
         char[] ch = str.toCharArray();
         boolean bol = true;
-        for (int i = 0; i < ch.length ; i++) {
-            if(str.lastIndexOf(ch[i])!=i){
-                 bol = false;
-                 break;
-            }  
+        for (int i = 0; i < ch.length; i++) {
+            if (str.lastIndexOf(ch[i]) != i) {
+                bol = false;
+                break;
+            }
         }
         //System.out.println("is differ symbol: " + bol);
         return bol;
     }
 
     private static void task6() {
-        System.out.println("6. Ввести n слов с консоли. Найти слово,"+"\n"
-                + "  символы в котором идут в строгом порядке возрастания их кодов. "+"\n"
+        System.out.println("6. Ввести n слов с консоли. Найти слово," + "\n"
+                + "  символы в котором идут в строгом порядке возрастания их кодов. " + "\n"
                 + "Если таких слов несколько, найти первое из них.");
-        
+
+        String[] str = consoleReader();
+
+        boolean b = true;
+        for (String s : str) {
+            char[] ch = s.toCharArray();
+
+            for (int i = 1; i < ch.length; i++) {
+
+                if (ch[i] < ch[i - 1]) {
+                    b = false;
+                    break;
+                }
+            }
+            if (b) {
+                System.out.println(s);
+                break;
+            }
+        }
+
+    }
+
+    private static void task5() {
+        System.out.println("5. Ввести n слов с консоли. Найти количество слов,"+"\n"
+                + "  содержащих только символы латинского алфавита, а среди них –"+"\n"
+                + "количество слов с равным числом гласных и согласных букв. ");
         String[] str= consoleReader();
+        
         
     }
 
