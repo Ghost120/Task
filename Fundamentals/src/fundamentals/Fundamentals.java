@@ -25,7 +25,7 @@ public class Fundamentals {
         //task15();
         //task17();
         //task18();
-        //task19();//доделать
+        task19();//доделать
         //task20();
         //task21();
         //task23();
@@ -263,12 +263,44 @@ public class Fundamentals {
     private static void task19() {
         System.out.println("19. Уплотнить матрицу, удаляя из нее строки и столбцы, заполненные нулями.");
         int[][] matr = new int[n][n];
-        for (int i = 0; i < matr.length; i++) {
-            for (int j = 0; j < matr[i].length; j++) {
+        int[] column = new int[4];
+        int[] row = new int[4];
+        int n = 0, m = 0;
+        for (int i = 0; i < matr.length - 1; i++) {
+            for (int j = 0; j < matr.length; j = j + 2) {
                 Random random = new Random();
-                matr[i][j] = -n + random.nextInt(2 * n + 1);
+                matr[i][j] = random.nextInt(6);
             }
         }
+        printMatr(matr);
+       for (int i = 0; i < matr.length; i++) {
+            for (int j = 0; j < matr.length; j++) {
+                if (matr[i][j] != 0) {
+                    
+                    break;
+                }
+            }
+            
+       }
+
+        for (int j = 0; j < matr.length; j++) {
+            for (int i = 0; i < matr.length; i++) {
+                if (matr[i][j] != 0) {
+                    
+                    break;
+                }
+                if (true) {
+                    column[i] = i;
+                    m += 0;
+                }
+            }
+
+        }
+        System.out.println("row  " + Arrays.toString(row));
+        System.out.println("column  " + Arrays.toString(column));
+        System.out.println("n  " + n);
+        System.out.println("m  " + m);
+
     }
 
     private static void task20() {
@@ -476,8 +508,8 @@ public class Fundamentals {
 
         int[][] matr = getMatrix();
         printMatr(matr);
-        boolean tmp ;
-        int sedlo=0;
+        boolean tmp;
+        int sedlo = 0;
         int[] minMas = new int[4];
         int min;
         for (int i = 0; i < n; i++) {
@@ -490,90 +522,225 @@ public class Fundamentals {
             }
         }
         //System.out.println(Arrays.toString(minMas));
-        
+
         for (int j = 0; j < n; j++) {
-            tmp=false;
+            tmp = false;
             for (int i = 0; i < n; i++) {
                 if (matr[i][minMas[j]] < matr[i][j]) {
-                    tmp =true;
-                }     
-               
+                    tmp = true;
+                }
+
             }
-            if(tmp==false){sedlo+=1;}
+            if (tmp == false) {
+                sedlo += 1;
+            }
         }
 
-       
-        System.out.println("sedlo= "+sedlo);
+        System.out.println("sedlo= " + sedlo);
     }
-    
-    private static void task24(){
+
+    private static void task24() {
         System.out.println("24. Перестроить матрицу, переставляя в ней строки так,"
                 + " чтобы сумма элементов в строках полученной матрицы возрастала");
-        
-       int[][] matr= getMatrix();
-       printMatr(matr);
-       Comparator<int[]> comparator = new Comparator<int[]>() {
+
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        Comparator<int[]> comparator = new Comparator<int[]>() {
 
             public int compare(int[] o1, int[] o2) {
                 int a1 = 0;
                 int a2 = 0;
-                for(int i = 0; i < o1.length; i++){
+                for (int i = 0; i < o1.length; i++) {
                     a1 += o1[i];
                     a2 += o2[i];
                 }
-                if (a1 < a2) return -1;
-                if (a1 > a2) return 1;
+                if (a1 < a2) {
+                    return -1;
+                }
+                if (a1 > a2) {
+                    return 1;
+                }
                 return 0;
             }
         };
-       Arrays.sort(matr, comparator);
+        Arrays.sort(matr, comparator);
         System.out.println("");
-       printMatr(matr);
-        
-    }
-    
-    private static void task25(){
-        System.out.println("25. Найти число локальных минимумов. (Соседями элемента"+"\n"
-                + " матрицы назовем элементы, имеющие с ним общую сторону или угол."+"\n"
-                + " Элемент матрицы называется локальным минимумом, если он строго"+"\n"
-                + " меньше всех своих соседей.)");
-         
-    }
-    private static void task26(){
-        System.out.println("26. Найти наибольший среди локальных максимумов. "+"\n"
-                + "(Элемент матрицы называется локальным максимумом, если он "+"\n"
-                + "строго больше всех своих соседей.)");
-        int[][] matr= getMatrix();
         printMatr(matr);
-        
-        
+
     }
-    
-    private static void task27(){
+
+    private static void task25() {
+        System.out.println("25. Найти число локальных минимумов. (Соседями элемента" + "\n"
+                + " матрицы назовем элементы, имеющие с ним общую сторону или угол." + "\n"
+                + " Элемент матрицы называется локальным минимумом, если он строго" + "\n"
+                + " меньше всех своих соседей.)");
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        int max = 0, tmp = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0) {
+                    if (j == 0) {
+                        if ((matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i][j + 1])) {
+
+                            tmp += 1;
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    } else {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i][j + 1]) && ((matr[i][j] < matr[i + 1][j]))) {
+                            tmp += 1;
+                        }
+                    }
+
+                }
+                if ((i > 0) && (i < matr.length - 2)) {
+                    if (j == 0) {
+                        if ((matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i][j + 1]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    } else {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i][j + 1]) && (matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    }
+                }
+                if (i == matr.length - 1) {
+                    if (j == 0) {
+                        if ((matr[i][j] < matr[i][j + 1]) && (matr[i][j] < matr[i - 1][j])) {
+                            tmp += 1;
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i - 1][j])) {
+                            tmp += 1;
+                        }
+                    } else {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i - 1][j])) {
+                            tmp += 1;
+                        }
+                    }
+                }
+
+            }
+        }
+        System.out.println("max= " + tmp);
+
+    }
+
+    private static void task26() {
+        System.out.println("26. Найти наибольший среди локальных максимумов. " + "\n"
+                + "(Элемент матрицы называется локальным максимумом, если он " + "\n"
+                + "строго больше всех своих соседей.)");
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        int max = 0, tmp;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0) {
+                    if (j == 0) {
+                        if ((matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i][j + 1])) {
+                            max = matr[i][j];
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i][j + 1]) && ((matr[i][j] > matr[i + 1][j]))) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    }
+
+                }
+                if ((i > 0) && (i < matr.length - 2)) {
+                    if (j == 0) {
+                        if ((matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i][j + 1]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i][j + 1]) && (matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    }
+                }
+                if (i == matr.length - 1) {
+                    if (j == 0) {
+                        if ((matr[i][j] > matr[i][j + 1]) && (matr[i][j] > matr[i - 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i - 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i - 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        System.out.println("max= " + max);
+
+    }
+
+    private static void task27() {
         System.out.println("27. Перестроить заданную матрицу, переставляя в ней "
-                + "столбцы так, чтобы значения их характеристик убывали. (Характеристикой "+"\n"
+                + "столбцы так, чтобы значения их характеристик убывали. (Характеристикой " + "\n"
                 + "столбца прямоугольной матрицы называется сумма модулей его элементов).");
-        
-        int[][] matr= getMatrix();
-       printMatr(matr);
-       Comparator<int[]> comparator = new Comparator<int[]>() {
+
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        Comparator<int[]> comparator = new Comparator<int[]>() {
 
             public int compare(int[] o1, int[] o2) {
                 int a1 = 0;
                 int a2 = 0;
-                for(int i = 0; i < o1.length; i++){
+                for (int i = 0; i < o1.length; i++) {
                     a1 += Math.abs(o1[i]);
                     a2 += Math.abs(o2[i]);
                 }
-                if (a1 > a2) return -1;
-                if (a1 < a2) return 1;
+                if (a1 > a2) {
+                    return -1;
+                }
+                if (a1 < a2) {
+                    return 1;
+                }
                 return 0;
             }
         };
-       Arrays.sort(matr, comparator);
+        Arrays.sort(matr, comparator);
         System.out.println("");
-       printMatr(matr);
-        
+        printMatr(matr);
+
     }
-    
+
 }
