@@ -5,6 +5,9 @@ import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  *
@@ -934,7 +937,30 @@ public class Fundamentals {
                 + "  содержащих только символы латинского алфавита, а среди них –"+"\n"
                 + "количество слов с равным числом гласных и согласных букв. ");
         String[] str= consoleReader();
-        
+        Pattern pattern = Pattern.compile("^[A-Za-z]*$");
+        String[] latin = new String[str.length];
+        int i = 0;
+        for (String s : str) {
+            Matcher matcher = pattern.matcher(s);
+            if (matcher.matches()) {
+                latin[i] = s;
+                i++;
+            }
+        }
+
+        Pattern p = Pattern.compile("[Aa]|[Ee]|[Yy]|[Uu]|[Ii]|[Oo]");
+        for (String s : latin) {
+            if (s != null) {
+                Matcher m = p.matcher(s);
+                int counter = 0;
+                while (m.find()) {
+                    counter++;
+                }
+                if (counter == s.length() - counter) {
+                    System.out.println(s);
+                }
+            }
+        }
         
     }
 
