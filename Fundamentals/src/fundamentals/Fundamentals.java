@@ -8,7 +8,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  *
  * @author Kasyanenko Konstantin
@@ -18,11 +17,14 @@ public class Fundamentals {
     private static int n = 2;
 
     public static void main(String[] args) {
+        task1();
+        //task2();
         //task3();
+        //task4();
         //task11();
         //task22();
         //task16();
-        task5();
+        //task5();
         //task6();
         //task7();
         //task8();
@@ -933,10 +935,10 @@ public class Fundamentals {
     }
 
     private static void task5() {
-        System.out.println("5. Ввести n слов с консоли. Найти количество слов,"+"\n"
-                + "  содержащих только символы латинского алфавита, а среди них –"+"\n"
+        System.out.println("5. Ввести n слов с консоли. Найти количество слов," + "\n"
+                + "  содержащих только символы латинского алфавита, а среди них –" + "\n"
                 + "количество слов с равным числом гласных и согласных букв. ");
-        String[] str= consoleReader();
+        String[] str = consoleReader();
         Pattern pattern = Pattern.compile("^[A-Za-z]*$");
         String[] latin = new String[str.length];
         int i = 0;
@@ -961,6 +963,53 @@ public class Fundamentals {
                 }
             }
         }
+
+    }
+
+    private static void task4() {
+        System.out.println("4. Ввести n слов с консоли. Найти слово, в котором число" + "\n"
+                + " различных символов минимально. Если таких слов несколько, найти первое из них. ");
+        String[] str = consoleReader();
+        int tmp;
+        int[] size = new int[n];
+        boolean bol = true;
+        int min = str[0].length();
+        int minI = 0;
+        for (int k = 0; k < str.length; k++) {
+            char[] c = str[k].toCharArray();
+            for (int i = 0; i < c.length; i++) {
+                if (str[k].lastIndexOf(c[i]) != i) {
+                    size[k] += 1;
+
+                }
+            }
+            if (min > size[k]) {
+                min = size[k];
+                minI = k;
+            }
+        }
+
+        System.out.println(str[minI]);
+
+    }
+
+    private static void task2() {
+        System.out.println("2. Ввести n строк с консоли. Упорядочить и вывести строки" + "\n"
+                + " в порядке возрастания  значений их длины.");
+
+        String[] str = consoleReader();
+
+        Comparator<String> stringComparator = (o1, o2) -> o1.length() - o2.length();
+        Arrays.sort(str, stringComparator);
+
+        System.out.println(Arrays.toString(str));
+    }
+
+    private static void task1() {
+        System.out.println("1. Ввести n строк с консоли, найти самую короткую и" + "\n"
+                + " самую длинную строки. Вывести найденные строки и их длину.");
+
+        String[] str = consoleReader();
         
     }
 
