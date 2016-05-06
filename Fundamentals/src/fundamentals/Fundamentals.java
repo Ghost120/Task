@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class Fundamentals {
 
-    private static int n = 2;
+    private static int n = 4;
 
     public static void main(String[] args) {
         task1();
@@ -1010,7 +1010,13 @@ public class Fundamentals {
                 + " самую длинную строки. Вывести найденные строки и их длину.");
 
         String[] str = consoleReader();
-        
+        Comparator<String> stringComparator = (o1, o2) -> o1.length() - o2.length();
+        Arrays.sort(str, stringComparator);
+
+        int length = str.length - 1;
+        System.out.println(str[0] + " : " + str[0].length());
+        System.out.println(str[length] + " : " + str[length].length() );
+
     }
 
 }
