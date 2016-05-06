@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -12,14 +14,22 @@ import java.util.Scanner;
  */
 public class Fundamentals {
 
-    private static int n = 4;
+    private static int n = 2;
 
     public static void main(String[] args) {
+        task1();
+        //task2();
         //task3();
+        //task4();
         //task11();
         //task22();
         //task16();
+        //task5();
+        //task6();
+        //task7();
+        //task8();
         //task9();
+        //task10();
         //task13();
         //task14();
         //task15();
@@ -28,11 +38,21 @@ public class Fundamentals {
         //task19();//доделать
         //task20();
         //task21();
-        task23();
+        //task23();
+        //task24();
+        //task25();
+        //task26();
+        //task27();
     }
 
     private static String[] consoleReader() {
-        String[] temp = {"qwe qwer", "qwemrtmdf dfg", "wseg sdfg"};
+        String[] temp = new String[n];
+        Scanner scn = new Scanner(System.in);
+        for (int i = 0; i < n; i++) {
+            System.out.print("Введите слово и нажмите Enter:  ");
+            temp[i] = scn.nextLine();
+        }
+        scn.close();
         return temp;
     }
 
@@ -259,12 +279,64 @@ public class Fundamentals {
     private static void task19() {
         System.out.println("19. Уплотнить матрицу, удаляя из нее строки и столбцы, заполненные нулями.");
         int[][] matr = new int[n][n];
-        for (int i = 0; i < matr.length; i++) {
-            for (int j = 0; j < matr[i].length; j++) {
+        boolean[] column = {true, true, true, true};
+        boolean[] row = new boolean[n];
+        int n = 0, m = 0;
+        for (int i = 0; i < matr.length - 1; i++) {
+            for (int j = 0; j < matr.length; j = j + 2) {
                 Random random = new Random();
-                matr[i][j] = -n + random.nextInt(2 * n + 1);
+                matr[i][j] = random.nextInt(6);
             }
         }
+        printMatr(matr);
+        boolean bol = true;
+        for (int i = 0; i < matr.length; i++) {
+            for (int j = 0; j < matr.length; j++) {
+                if (matr[i][j] != 0) {
+                    bol = true;
+                    break;
+                } else {
+                    bol = false;
+                }
+            }
+            if (bol == false) {
+                row[i] = true;
+                n++;
+            }
+
+        }
+        bol = true;
+        for (int j = 0; j < matr.length; j++) {
+            for (int i = 0; i < matr.length; i++) {
+                if (matr[i][j] != 0) {
+                    bol = true;
+                    break;
+                } else {
+                    bol = false;
+                }
+
+            }
+            if (bol) {
+                column[j] = false;
+                m++;
+            }
+
+        }
+        System.out.println("column  " + Arrays.toString(column));
+        System.out.println("row  " + Arrays.toString(row));
+
+        System.out.println("n  " + n);
+        System.out.println("m  " + m);
+
+        for (int i = 0; i < matr.length; i++) {
+            for (int j = 0; j < matr.length; j++) {
+                if ((row[j]) && (column[i])) {
+                    System.out.print(matr[i][j] + "\t");
+                }
+            }
+            System.out.println(" ");
+        }
+
     }
 
     private static void task20() {
@@ -472,8 +544,8 @@ public class Fundamentals {
 
         int[][] matr = getMatrix();
         printMatr(matr);
-        boolean tmp ;
-        int sedlo=0;
+        boolean tmp;
+        int sedlo = 0;
         int[] minMas = new int[4];
         int min;
         for (int i = 0; i < n; i++) {
@@ -485,21 +557,460 @@ public class Fundamentals {
                 }
             }
         }
-        
+        //System.out.println(Arrays.toString(minMas));
+
         for (int j = 0; j < n; j++) {
-            tmp=false;
+            tmp = false;
             for (int i = 0; i < n; i++) {
-                if (minMas[j] < matr[i][j]) {
-                    tmp =true;
-                }     
-               
+                if (matr[i][minMas[j]] < matr[i][j]) {
+                    tmp = true;
+                }
+
             }
-            if(tmp==false){sedlo+=1;}
+            if (tmp == false) {
+                sedlo += 1;
+            }
         }
 
-        for (int i = 0; i < n; i++) {
-            System.out.println("minJ= " + minMas[i]);
-        }
-        System.out.println("sedlo= "+sedlo);
+        System.out.println("sedlo= " + sedlo);
     }
+
+    private static void task24() {
+        System.out.println("24. Перестроить матрицу, переставляя в ней строки так,"
+                + " чтобы сумма элементов в строках полученной матрицы возрастала");
+
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        Comparator<int[]> comparator = new Comparator<int[]>() {
+
+            public int compare(int[] o1, int[] o2) {
+                int a1 = 0;
+                int a2 = 0;
+                for (int i = 0; i < o1.length; i++) {
+                    a1 += o1[i];
+                    a2 += o2[i];
+                }
+                if (a1 < a2) {
+                    return -1;
+                }
+                if (a1 > a2) {
+                    return 1;
+                }
+                return 0;
+            }
+        };
+        Arrays.sort(matr, comparator);
+        System.out.println("");
+        printMatr(matr);
+
+    }
+
+    private static void task25() {
+        System.out.println("25. Найти число локальных минимумов. (Соседями элемента" + "\n"
+                + " матрицы назовем элементы, имеющие с ним общую сторону или угол." + "\n"
+                + " Элемент матрицы называется локальным минимумом, если он строго" + "\n"
+                + " меньше всех своих соседей.)");
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        int max = 0, tmp = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0) {
+                    if (j == 0) {
+                        if ((matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i][j + 1])) {
+
+                            tmp += 1;
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    } else {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i][j + 1]) && ((matr[i][j] < matr[i + 1][j]))) {
+                            tmp += 1;
+                        }
+                    }
+
+                }
+                if ((i > 0) && (i < matr.length - 2)) {
+                    if (j == 0) {
+                        if ((matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i][j + 1]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    } else {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i][j + 1]) && (matr[i][j] < matr[i + 1][j]) && (matr[i][j] < matr[i + 1][j])) {
+                            tmp += 1;
+                        }
+                    }
+                }
+                if (i == matr.length - 1) {
+                    if (j == 0) {
+                        if ((matr[i][j] < matr[i][j + 1]) && (matr[i][j] < matr[i - 1][j])) {
+                            tmp += 1;
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i - 1][j])) {
+                            tmp += 1;
+                        }
+                    } else {
+                        if ((matr[i][j] < matr[i][j - 1]) && (matr[i][j] < matr[i - 1][j])) {
+                            tmp += 1;
+                        }
+                    }
+                }
+
+            }
+        }
+        System.out.println("max= " + tmp);
+
+    }
+
+    private static void task26() {
+        System.out.println("26. Найти наибольший среди локальных максимумов. " + "\n"
+                + "(Элемент матрицы называется локальным максимумом, если он " + "\n"
+                + "строго больше всех своих соседей.)");
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        int max = 0, tmp;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0) {
+                    if (j == 0) {
+                        if ((matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i][j + 1])) {
+                            max = matr[i][j];
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i][j + 1]) && ((matr[i][j] > matr[i + 1][j]))) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    }
+
+                }
+                if ((i > 0) && (i < matr.length - 2)) {
+                    if (j == 0) {
+                        if ((matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i][j + 1]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i][j + 1]) && (matr[i][j] > matr[i + 1][j]) && (matr[i][j] > matr[i + 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    }
+                }
+                if (i == matr.length - 1) {
+                    if (j == 0) {
+                        if ((matr[i][j] > matr[i][j + 1]) && (matr[i][j] > matr[i - 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else if (j == matr.length - 1) {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i - 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    } else {
+                        if ((matr[i][j] > matr[i][j - 1]) && (matr[i][j] > matr[i - 1][j])) {
+                            if (max < matr[i][j]) {
+                                max = matr[i][j];
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        System.out.println("max= " + max);
+
+    }
+
+    private static void task27() {
+        System.out.println("27. Перестроить заданную матрицу, переставляя в ней "
+                + "столбцы так, чтобы значения их характеристик убывали. (Характеристикой " + "\n"
+                + "столбца прямоугольной матрицы называется сумма модулей его элементов).");
+
+        int[][] matr = getMatrix();
+        printMatr(matr);
+        Comparator<int[]> comparator = new Comparator<int[]>() {
+
+            public int compare(int[] o1, int[] o2) {
+                int a1 = 0;
+                int a2 = 0;
+                for (int i = 0; i < o1.length; i++) {
+                    a1 += Math.abs(o1[i]);
+                    a2 += Math.abs(o2[i]);
+                }
+                if (a1 > a2) {
+                    return -1;
+                }
+                if (a1 < a2) {
+                    return 1;
+                }
+                return 0;
+            }
+        };
+        Arrays.sort(matr, comparator);
+        System.out.println("");
+        printMatr(matr);
+
+    }
+
+    private static void task10() {
+        System.out.println("10. Написать программу, позволяющую корректно находить " + "\n"
+                + "корни квадратного уравнения. Параметры уравнения должны задаваться" + "\n"
+                + " с командной строки.");
+        Scanner scn = new Scanner(System.in);
+        System.out.println("Введите a:");
+        double a = 0;
+
+        while (true) {
+            try {
+                a = scn.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Не правильный ввод");
+                scn.next();
+                continue;
+            }
+            break;
+        }
+
+        double b = 0;
+        System.out.println("Введите b:");
+        while (true) {
+            try {
+                b = scn.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Не правильный ввод");
+                scn.next();
+                continue;
+            }
+            break;
+        }
+
+        double c = 0;
+        System.out.println("Введите c:");
+        while (true) {
+            try {
+                c = scn.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Не правильный ввод");
+                scn.next();
+                continue;
+            }
+            break;
+        }
+        scn.close();
+        System.out.println(a + "x^2 + " + b + "x + " + c);
+        if (a == 0) {
+            double x = -c / b;
+            System.out.println("x = " + x);
+            return;
+        }
+        double D = b * b - 4 * a * c;
+        if (D < 0) {
+            System.out.println("D < 0");
+        } else if (D == 0) {
+            double x = -b / (2 * a);
+
+            System.out.println("x = " + x);
+        } else if (D > 0) {
+            double d = Math.sqrt(D);
+            double x1 = (-b + d) / (2 * a);
+            double x2 = (-b - d) / (2 * a);
+            System.out.println("D= " + d);
+            System.out.println("x1 = " + x1 + " x2 = " + x2);
+        }
+    }
+
+    private static void task8() {
+        System.out.println("8. Ввести n слов с консоли. Среди слов, состоящих" + "\n"
+                + " только из цифр, найти слово-палиндром. Если таких слов больше" + "\n"
+                + " одного, найти второе из них.");
+
+        String[] tmp = consoleReader();
+        for (String str : tmp) {
+            if (isPalindrom(str)) {
+                System.out.print("Палиндромов: ");
+                System.out.println(str);
+            } else {
+                System.out.println("Палиндромов нет!");
+            }
+        }
+
+    }
+
+    private static boolean isPalindrom(String str) {
+        str = str.trim();
+        char[] orig = str.toCharArray();
+        boolean g = false;
+        for (int i = 0, j = orig.length - 1; (i < j); i++, j--) {
+            if (orig[i] != orig[j]) {
+                g = false;
+                break;
+            } else {
+                g = true;
+            }
+        }
+        //System.out.println("is palindrom: "+g);
+        return g;
+    }
+
+    private static void task7() {
+        System.out.println("7. Ввести n слов с консоли. Найти слово," + "\n"
+                + "  состоящее только из различных символов. Если таких" + "\n"
+                + " слов несколько, найти первое из них");
+
+        String[] str = consoleReader();
+        for (String s : str) {
+            if (isDifferSymbol(s)) {
+                System.out.println(s);
+                break;
+            }
+        }
+
+    }
+
+    private static boolean isDifferSymbol(String str) {
+        str = str.trim();
+        char[] ch = str.toCharArray();
+        boolean bol = true;
+        for (int i = 0; i < ch.length; i++) {
+            if (str.lastIndexOf(ch[i]) != i) {
+                bol = false;
+                break;
+            }
+        }
+        //System.out.println("is differ symbol: " + bol);
+        return bol;
+    }
+
+    private static void task6() {
+        System.out.println("6. Ввести n слов с консоли. Найти слово," + "\n"
+                + "  символы в котором идут в строгом порядке возрастания их кодов. " + "\n"
+                + "Если таких слов несколько, найти первое из них.");
+
+        String[] str = consoleReader();
+
+        boolean b = true;
+        for (String s : str) {
+            char[] ch = s.toCharArray();
+
+            for (int i = 1; i < ch.length; i++) {
+
+                if (ch[i] < ch[i - 1]) {
+                    b = false;
+                    break;
+                }
+            }
+            if (b) {
+                System.out.println(s);
+                break;
+            }
+        }
+
+    }
+
+    private static void task5() {
+        System.out.println("5. Ввести n слов с консоли. Найти количество слов," + "\n"
+                + "  содержащих только символы латинского алфавита, а среди них –" + "\n"
+                + "количество слов с равным числом гласных и согласных букв. ");
+        String[] str = consoleReader();
+        Pattern pattern = Pattern.compile("^[A-Za-z]*$");
+        String[] latin = new String[str.length];
+        int i = 0;
+        for (String s : str) {
+            Matcher matcher = pattern.matcher(s);
+            if (matcher.matches()) {
+                latin[i] = s;
+                i++;
+            }
+        }
+
+        Pattern p = Pattern.compile("[Aa]|[Ee]|[Yy]|[Uu]|[Ii]|[Oo]");
+        for (String s : latin) {
+            if (s != null) {
+                Matcher m = p.matcher(s);
+                int counter = 0;
+                while (m.find()) {
+                    counter++;
+                }
+                if (counter == s.length() - counter) {
+                    System.out.println(s);
+                }
+            }
+        }
+
+    }
+
+    private static void task4() {
+        System.out.println("4. Ввести n слов с консоли. Найти слово, в котором число" + "\n"
+                + " различных символов минимально. Если таких слов несколько, найти первое из них. ");
+        String[] str = consoleReader();
+        int tmp;
+        int[] size = new int[n];
+        boolean bol = true;
+        int min = str[0].length();
+        int minI = 0;
+        for (int k = 0; k < str.length; k++) {
+            char[] c = str[k].toCharArray();
+            for (int i = 0; i < c.length; i++) {
+                if (str[k].lastIndexOf(c[i]) != i) {
+                    size[k] += 1;
+
+                }
+            }
+            if (min > size[k]) {
+                min = size[k];
+                minI = k;
+            }
+        }
+
+        System.out.println(str[minI]);
+
+    }
+
+    private static void task2() {
+        System.out.println("2. Ввести n строк с консоли. Упорядочить и вывести строки" + "\n"
+                + " в порядке возрастания  значений их длины.");
+
+        String[] str = consoleReader();
+
+        Comparator<String> stringComparator = (o1, o2) -> o1.length() - o2.length();
+        Arrays.sort(str, stringComparator);
+
+        System.out.println(Arrays.toString(str));
+    }
+
+    private static void task1() {
+        System.out.println("1. Ввести n строк с консоли, найти самую короткую и" + "\n"
+                + " самую длинную строки. Вывести найденные строки и их длину.");
+
+        String[] str = consoleReader();
+        
+    }
+
 }
