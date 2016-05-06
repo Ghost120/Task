@@ -17,7 +17,7 @@ public class Fundamentals {
     private static int n = 4;
 
     public static void main(String[] args) {
-        task1();
+        //task1();
         //task2();
         //task3();
         //task4();
@@ -35,7 +35,7 @@ public class Fundamentals {
         //task15();
         //task17();
         //task18();
-        //task19();//доделать
+        //task19();
         //task20();
         //task21();
         //task23();
@@ -322,15 +322,19 @@ public class Fundamentals {
             }
 
         }
-        System.out.println("column  " + Arrays.toString(column));
-        System.out.println("row  " + Arrays.toString(row));
-
-        System.out.println("n  " + n);
-        System.out.println("m  " + m);
+        System.out.println();
+//        System.out.println("column  " + Arrays.toString(column));
+//        System.out.println("row  " + Arrays.toString(row));
+//
+//        System.out.println("n  " + n);
+//        System.out.println("m  " + m);
 
         for (int i = 0; i < matr.length; i++) {
+            if(row[i]){
+                continue;
+            }
             for (int j = 0; j < matr.length; j++) {
-                if ((row[j]) && (column[i])) {
+                if(column[j]==false) {
                     System.out.print(matr[i][j] + "\t");
                 }
             }
