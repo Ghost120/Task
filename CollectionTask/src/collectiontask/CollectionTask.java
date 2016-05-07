@@ -7,15 +7,13 @@ package collectiontask;
 
 /**
  *
- * @author asus 123
+ * @author Kasyanenko Konstantin
  */
 public class CollectionTask {
 
-    /**
-     * @param args the command line arguments
-     */
+   
     public static void main(String[] args) {
-        // TODO code application logic here
+        System.out.println("xcv");
     }
     
 }
