@@ -27,7 +27,8 @@ public class CollectionTask {
 
     public static void main(String[] args) throws IOException {
         //task1();
-        task2("C:\\Users\\asus 123\\Documents\\NetBeansProjects");
+        //List<Path> listKatal = task2("C:\\Users\\asus 123\\Documents\\NetBeansProjects");
+        task3();
 
     }
 
@@ -61,10 +62,11 @@ public class CollectionTask {
         }
         Files.write(path, list);
     }
-
+/**
+ * 1. Ввести строки из файла, записать в список. Вывести строки в файл в обратном порядке.
+ * @throws IOException 
+ */
     private static void task1() throws IOException {
-        System.out.println("1. Ввести строки из файла, записать в список." + "\n"
-                + " Вывести строки в файл в обратном порядке.");
         String fileName = "src\\file.txt";
         List<String> list = readFileToList(fileName);
         System.out.println(list);
@@ -74,11 +76,12 @@ public class CollectionTask {
 
     }
 /**
- * 
+ * 2. Создать список из элементов каталога и его подкаталогов.
  * @param fileDirrectory -путь к дирректории
  * 
  */
-    private static void task2(String fileDirrectory) {
+    private static List<Path> task2(String fileDirrectory) {
+        //System.out.println("2. Создать список из элементов каталога и его подкаталогов.");
         //String fileName = "C:\\Users\\asus 123\\Documents\\NetBeansProjects";
         Path pathSource = Paths.get(fileDirrectory);
         List<Path> katalPodkatal = new ArrayList<>();
@@ -101,9 +104,26 @@ public class CollectionTask {
             Files.walkFileTree(pathSource, new Visitor());
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } 
+        //System.out.println(katalPodkatal.toString());
+        return katalPodkatal;
+    }
+    /**
+     * 3. Занести стихотворения одного автора в список. Провести сортировку по возрастанию длин строк.
+     */
+    private static void task3(){
+        List<String> list= readFileToList("src\\file1.txt");
+        list.forEach((s)->System.out.println(s));
+        Collections.sort(list, (s1, s2) -> s1.length() - s2.length());
+        list.forEach((s) -> System.out.print(s+"\n"));
+    }
+    
+    /**
+     * 4. Определить множество на основе множества целых чисел. 
+     * Создать методы для определения пересечения и объединения множеств.
+     */
+    private static void task4(){
         
-        System.out.println(katalPodkatal.toString());
     }
 
 
