@@ -1,0 +1,6 @@
+transformations on collections
+such as map-reduce 
+on streams of elements
+functional-style operations
+Classes to support
+Package java.util.stream Description
