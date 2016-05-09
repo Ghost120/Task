@@ -6,25 +6,31 @@
 package collectiontask;
 
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import sun.dc.pr.PathStroker;
 
 /**
  *
  * @author Kasyanenko Konstantin
  */
 public class CollectionTask {
- //private List<String> list;
+    //private List<String> list;
 
     public static void main(String[] args) throws IOException {
-        task1();
-        task2();
+        //task1();
+        task2("C:\\Users\\asus 123\\Documents\\NetBeansProjects");
 
     }
+
     /**
      * Возвращает Arraylist из файла
      */
@@ -40,12 +46,14 @@ public class CollectionTask {
         return list;
 
     }
-/**
- * Записывает List в файл
- * @param list
- * @param fileName
- * @throws IOException 
- */
+
+    /**
+     * Записывает List в файл
+     *
+     * @param list
+     * @param fileName
+     * @throws IOException
+     */
     private static void writeListInFile(List<String> list, String fileName) throws IOException {
         Path path = Paths.get(fileName);
         if (Files.notExists(path)) {
@@ -65,9 +73,38 @@ public class CollectionTask {
         System.out.println(list);
 
     }
-
-    private static void task2() {
+/**
+ * 
+ * @param fileDirrectory -путь к дирректории
+ * 
+ */
+    private static void task2(String fileDirrectory) {
+        //String fileName = "C:\\Users\\asus 123\\Documents\\NetBeansProjects";
+        Path pathSource = Paths.get(fileDirrectory);
+        List<Path> katalPodkatal = new ArrayList<>();
         
+        class Visitor extends SimpleFileVisitor<Path> {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                katalPodkatal.add(file);
+                return super.visitFile(file, attrs);
+            }
+
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                katalPodkatal.add(dir);
+                return super.preVisitDirectory(dir, attrs);
+            }
+        }
+
+        try {
+            Files.walkFileTree(pathSource, new Visitor());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println(katalPodkatal.toString());
     }
+
 
 }
