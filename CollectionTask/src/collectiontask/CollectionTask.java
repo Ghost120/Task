@@ -12,28 +12,27 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
+
+
 
 /**
  *
  * @author Kasyanenko Konstantin
  */
 public class CollectionTask {
+
     //private List<String> list;
+    private static Scanner scn = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
         //task1();
         //List<Path> listKatal = task2("C:\\Users\\asus 123\\Documents\\NetBeansProjects");
         //task3();
         //task4();
-        task5();
+        //task5();//доделать
+        //task6();
+        task7();
 
     }
 
@@ -138,20 +137,149 @@ public class CollectionTask {
     private static void task4() {
         Set<Integer> set1 = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5));
         Set<Integer> set2 = new HashSet<>(Arrays.asList(4, 5, 6, 7, 8));
-        System.out.println("set1: "+ set1.toString()+"\nset2: "+set2.toString());
+        System.out.println("set1: " + set1.toString() + "\nset2: " + set2.toString());
         Set<Integer> union = SetOfInteger.concatSet(set1, set2);
         Set<Integer> intersect = SetOfInteger.isIntersect(set1, set2);
         System.out.println("union: " + union + "\nintersect:" + intersect);
     }
-    
-    
+
     /**
-     * 5. Списки I(1..n) и U(1..n) содержат результаты n-измерений тока и 
-     * напряжения на неизвестном сопротивлении R. Найти приближенное число R 
+     * 5. Списки I(1..n) и U(1..n) содержат результаты n-измерений тока и
+     * напряжения на неизвестном сопротивлении R. Найти приближенное число R
      * методом наименьших квадратов.
      */
-    private static void task5(){
-    
+    private static void task5() {
+
+    }
+
+    /**
+     * 6. Сложить два многочлена, если коэффициенты многочленов хранятся в
+     * объекте HashMap (степень элемента многочлена – это ключ, коэффициент
+     * элемента многочлена – это значение).
+     */
+    private static void task6() {
+        Map<Integer, Integer> polynominal1;
+        Map<Integer, Integer> polynominal2;
+        Map<Integer, Integer> sum;
+        System.out.print("Ведите степень многочлена:");
+        int power = scn.nextInt();
+        polynominal1 = initPolynomial(power);
+        printPolynomial(polynominal1);
+        polynominal2 = initPolynomial(power);
+        printPolynomial(polynominal2);
+        scn.close();
+        sum = getSum(polynominal1, polynominal2);
+        System.out.println("sum: ");
+        printPolynomial(sum);
+    }
+
+    private static Map<Integer, Integer> getSum(Map<Integer, Integer> first, Map<Integer, Integer> second) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int n;
+        if ((first.size() - second.size()) < 0) {
+            n = first.size();
+        } else {
+            n = second.size();
+        }
+        for (int i = 1; i <= n; i++) {
+            map.put(i, first.get(i) + second.get(i));
+        }
+
+        return map;
+    }
+
+    /**
+     *
+     * @param power- степень многочлена
+     * @return многочлен HashMap
+     */
+    private static Map<Integer, Integer> initPolynomial(int power) {
+        Map<Integer, Integer> map = new HashMap<>();
+        System.out.println("Введите коэффициенты многочлена: ");
+        for (int i = 1; i <= power; i++) {
+            System.out.print("Введите коэффициент " + (i) + ": ");
+            map.put(i, scn.nextInt());
+        }
+        return map;
+    }
+
+    private static void printPolynomial(Map<Integer, Integer> map) {
+        for (int i = map.size(); i >= 1; i--) {
+            if (i > 1) {
+                System.out.print(map.get(i) + "x^" + i + " + ");
+            } else {
+                System.out.print(map.get(i) + "x");
+            }
+        }
+        System.out.println();
+    }
+
+    /**
+     * 7. Умножить два многочлена заданной степени, если коэффициенты
+     * многочленов хранятся в различных списках.
+     */
+    private static void task7() {
+        System.out.print("Ведите степень многочлена:");
+        int power = scn.nextInt();
+        List<Integer> list1= initPolynomialList(power);
+        printPolynomialList(list1);
+        List<Integer> list2= initPolynomialList(power);
+        printPolynomialList(list2);
+        List<Integer> summa= new ArrayList<>();
+        
+        for(int i=0;i<power;i++){
+            summa.add(list1.get(i)*list2.get(i));
+        }
+        System.out.println("summa: ");
+        printPolynomialList(summa);
+    }
+
+    private static void printPolynomialList(List<Integer> list) {
+        for (int i = list.size()-1; i >= 0; i--) {
+            
+            if (i > 0) {
+                System.out.print(list.get(i) + "x^" + (i + 1) + " + ");
+            } else {
+                System.out.print(list.get(i) + "x");
+            }
+        }
+        System.out.println();
+    }
+    private static List<Integer> initPolynomialList(int power) {
+        List<Integer> list= new ArrayList<>();
+        System.out.println("Введите коэффициенты многочлена: ");
+        for (int i = 0; i < power; i++) {
+            System.out.print("Введите коэффициент " + (i+1) + ": ");
+            list.add(scn.nextInt());
+        }
+        return list;
+    }
+
+    /**
+     * 8. Задана строка, содержащая символы '(', ')', '[', ']', '{', '}'.
+     * Проверить правильность расстановки скобок. Использовать стек.
+     */
+    private static void task8() {
+
+    }
+
+    /**
+     * 9. Задан файл с текстом на английском языке. Выделить все различные
+     * слова. Слова, отличающиеся только регистром букв, считать одинаковыми.
+     * Использовать класс HashSet.
+     */
+    private static void task9() {
+
+    }
+
+    /**
+     * 10. Задан файл с текстом на английском языке. Выделить все различные
+     * слова. Для каждого слова подсчитать частоту его встречаемости. Слова,
+     * отличающиеся регистром букв, считать различными. Использовать класс
+     * HashMap.
+     */
+    private static void task10() {
+
     }
 
 }
