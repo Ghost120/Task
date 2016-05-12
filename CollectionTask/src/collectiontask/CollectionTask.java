@@ -14,8 +14,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
-
-
 /**
  *
  * @author Kasyanenko Konstantin
@@ -32,7 +30,8 @@ public class CollectionTask {
         //task4();
         //task5();//доделать
         //task6();
-        task7();
+        //task7();
+        //System.out.println(task8("(({)})"));
 
     }
 
@@ -221,22 +220,22 @@ public class CollectionTask {
     private static void task7() {
         System.out.print("Ведите степень многочлена:");
         int power = scn.nextInt();
-        List<Integer> list1= initPolynomialList(power);
+        List<Integer> list1 = initPolynomialList(power);
         printPolynomialList(list1);
-        List<Integer> list2= initPolynomialList(power);
+        List<Integer> list2 = initPolynomialList(power);
         printPolynomialList(list2);
-        List<Integer> summa= new ArrayList<>();
-        
-        for(int i=0;i<power;i++){
-            summa.add(list1.get(i)*list2.get(i));
+        List<Integer> summa = new ArrayList<>();
+
+        for (int i = 0; i < power; i++) {
+            summa.add(list1.get(i) * list2.get(i));
         }
         System.out.println("summa: ");
         printPolynomialList(summa);
     }
 
     private static void printPolynomialList(List<Integer> list) {
-        for (int i = list.size()-1; i >= 0; i--) {
-            
+        for (int i = list.size() - 1; i >= 0; i--) {
+
             if (i > 0) {
                 System.out.print(list.get(i) + "x^" + (i + 1) + " + ");
             } else {
@@ -245,11 +244,12 @@ public class CollectionTask {
         }
         System.out.println();
     }
+
     private static List<Integer> initPolynomialList(int power) {
-        List<Integer> list= new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         System.out.println("Введите коэффициенты многочлена: ");
         for (int i = 0; i < power; i++) {
-            System.out.print("Введите коэффициент " + (i+1) + ": ");
+            System.out.print("Введите коэффициент " + (i + 1) + ": ");
             list.add(scn.nextInt());
         }
         return list;
@@ -259,8 +259,58 @@ public class CollectionTask {
      * 8. Задана строка, содержащая символы '(', ')', '[', ']', '{', '}'.
      * Проверить правильность расстановки скобок. Использовать стек.
      */
-    private static void task8() {
+    private static boolean task8(String str) {
+        Stack<Character> stack = new Stack<>();
+        char[] strChar = str.toCharArray();
+        
+        for (char c : strChar) {
+            if (isOpenBracket(c)) {
+                stack.push(c);
+                continue;
+            }
 
+            if (isCloseBracket(c)) {
+
+                if (stack.isEmpty()) {
+                   
+                    return false;
+                }
+                
+                if (c == ')') {
+                    if (stack.peek() == '(') {
+                        stack.pop();
+                    } else {
+                        return false;
+                    }
+                }
+                if (c == '}') {
+                    if (stack.peek() == '{') {
+                        stack.pop();
+                    } else {
+                        return false;
+                    }
+                }
+                if (c == ']') {
+                    if (stack.peek() == '[') {
+                        stack.pop();
+                    } else {
+                       return false;
+                    }
+                }
+
+            }
+           
+        }
+
+        return true;
+    }
+
+    private static boolean isOpenBracket(char c) {
+        return ((c == '(') || (c == '{') || (c == '['));
+    }
+
+    private static boolean isCloseBracket(char c) {
+        return ((c == ')') || (c == '}') || (c == ']'));
     }
 
     /**
