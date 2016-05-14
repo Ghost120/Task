@@ -13,6 +13,10 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import java.util.stream.*;
 
 /**
  *
@@ -32,6 +36,7 @@ public class CollectionTask {
         //task6();
         //task7();
         //System.out.println(task8("(({)})"));
+        task9();
 
     }
 
@@ -262,7 +267,7 @@ public class CollectionTask {
     private static boolean task8(String str) {
         Stack<Character> stack = new Stack<>();
         char[] strChar = str.toCharArray();
-        
+
         for (char c : strChar) {
             if (isOpenBracket(c)) {
                 stack.push(c);
@@ -272,10 +277,10 @@ public class CollectionTask {
             if (isCloseBracket(c)) {
 
                 if (stack.isEmpty()) {
-                   
+
                     return false;
                 }
-                
+
                 if (c == ')') {
                     if (stack.peek() == '(') {
                         stack.pop();
@@ -294,12 +299,12 @@ public class CollectionTask {
                     if (stack.peek() == '[') {
                         stack.pop();
                     } else {
-                       return false;
+                        return false;
                     }
                 }
 
             }
-           
+
         }
 
         return true;
@@ -319,6 +324,17 @@ public class CollectionTask {
      * Использовать класс HashSet.
      */
     private static void task9() {
+        Set<String> set = new HashSet<>();
+        try (Stream<String> stream = Files.lines(Paths.get("src\\task9.txt"))) {
+            set = stream.map(String::toLowerCase)
+                    .map(s -> s.replaceAll("[^ A-Za-z0-9]", ""))
+                    .flatMap(Pattern.compile(" ")::splitAsStream)
+                    .collect(Collectors.toSet());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        set.forEach(System.out::println);
 
     }
 
@@ -329,7 +345,12 @@ public class CollectionTask {
      * HashMap.
      */
     private static void task10() {
-
+        Map<String,Integer> hashMap= new HashMap();
+        try(Stream<String> stream= Files.lines(Paths.get("src\\task9.txt"))){
+            
+        } catch (IOException ex) {
+          ex.printStackTrace();
+        }
     }
 
 }
