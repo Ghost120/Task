@@ -36,7 +36,8 @@ public class CollectionTask {
         //task6();
         //task7();
         //System.out.println(task8("(({)})"));
-        task9();
+        //task9();
+        task10();
 
     }
 
@@ -345,12 +346,28 @@ public class CollectionTask {
      * HashMap.
      */
     private static void task10() {
-        Map<String,Integer> hashMap= new HashMap();
-        try(Stream<String> stream= Files.lines(Paths.get("src\\task9.txt"))){
-            
+        Map<String, Integer> map = new HashMap();
+        try (Stream<String> stream = Files.lines(Paths.get("src\\task9.txt"))) {
+            String[] temp;
+            temp = stream
+                    .map(s -> s.toLowerCase())
+                    .flatMap(Pattern.compile(" ")::splitAsStream)
+                    .toArray(String[]::new);
+            for (String s : temp) {
+                if (s.equals("")) {
+                    continue;
+                }
+                if (map.containsKey(s)) {
+                    map.put(s, map.get(s) + 1);
+                } else {
+                    map.put(s, 1);
+                }
+            }
+
         } catch (IOException ex) {
-          ex.printStackTrace();
+            ex.printStackTrace();
         }
+        map.forEach((key, val) -> System.out.println("слово: " + key + " встречается: " + val + " раз"));
     }
 
 }
