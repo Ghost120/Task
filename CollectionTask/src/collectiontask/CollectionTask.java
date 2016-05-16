@@ -5,6 +5,11 @@
  */
 package collectiontask;
 
+import collectiontask.graph.Graph;
+import collectiontask.task14.MyStructureList;
+import java.awt.Point;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -39,7 +44,10 @@ public class CollectionTask {
         //task9();
         //task10();
         //task11(100000);
-        task12();
+        //task12();//доделать
+        //task13();
+        //task14();
+        task15();
 
     }
 
@@ -441,16 +449,131 @@ public class CollectionTask {
         int mem;
         for (int i = 0; i < n; i++) {
             if (list.get(i) < x) {
-                mem=list.get(i);
+                mem = list.get(i);
                 //list.add(tmp, list.get());
                 list.add(i, list.get(mem));
-               // list.add(i, mem);
-            }else{
-                tmp=i;
+                // list.add(i, mem);
+            } else {
+                tmp = i;
             }
         }
         System.out.println(list.toString());
 
+    }
+
+    /**
+     * 13. Реализовать класс Graph, представляющий собой неориентированный граф.
+     * В конструкторе класса передается количество вершин в графе. Методы должны
+     * поддерживать быстрое добавление и удаление ребер.
+     */
+    private static void task13() {
+        Graph graph = new Graph(10);
+        graph.addSide(12, 123);
+        graph.addSide(34, 45);
+        System.out.println(graph.getVertexes().toString());
+    }
+
+    /**
+     * 14. На базе коллекций реализовать структуру хранения чисел с поддержкой
+     * следующих операций: добавление/удаление числа; поиск числа, наиболее
+     * близкого к заданному (т.е. модуль разницы минимален).
+     */
+    private static void task14() {
+        MyStructureList myList = new MyStructureList();
+        myList.addNumber(3);
+        myList.addNumber(5);
+        myList.addNumber(7);
+        myList.addNumber(8);
+        myList.addNumber(19);
+        myList.addNumber(45);
+        System.out.println("sd= наиболее близкое к заданному числу :" + myList.searchNumber(22));
+        System.out.println(myList.getList());
+        myList.deleteNumber(3);
+        System.out.println(myList.getList());
+
+    }
+
+    /**
+     * 15. На плоскости задано N точек. Вывести в файл описания всех прямых,
+     * которые проходят более чем через 2 точки из заданных. Для каждой прямой
+     * указать, через сколько точек она проходит. Использовать класс HashMap.
+     */
+    private static void task15() {
+        Map<Line2D, Integer> map;
+
+        System.out.print("Введите количество точек: ");
+        int n = scn.nextInt();
+        scn.close();
+        List<Point> points = getListPoints(n);
+        //System.out.println(points.toString());
+        map= getThisLineMap(points);
+       // System.out.println(points.toString());
+
+    }
+
+    private static List<Point> getListPoints(int n) {
+        Random rnd = new Random();
+        List<Point> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(new Point(rnd.nextInt(10), rnd.nextInt(10)));
+        }
+        return list;
+    }
+
+    /**
+     * возвращает коллекцию прямых, которые проходят более чем через 2 точки из
+     * заданных. Для каждой прямой указано, через сколько точек она проходит.
+     *
+     * @param pointList список точек
+     * @return коллекцию линий с количеством
+     */
+    private static Map<Line2D, Integer> getThisLineMap(List<Point> pointList) {
+        Map<Line2D, Integer> map = new HashMap<>();
+        for (int i = 0; i < pointList.size(); i++) {
+            for (int j = i; j < pointList.size(); j++) {
+
+                Point p1 = pointList.get(i);
+                Point p2 = pointList.get(j);
+
+                if (p1.equals(p2)) {
+                    continue;
+                }
+
+                Line2D.Double line = new Line2D.Double(p1, p2);
+                map.put(line, 2);
+            }
+        }
+        Map<Line2D, Integer> resultMap = new HashMap<>();
+
+        map.forEach((line, value) -> {
+            pointList.forEach(point -> {
+                if (!line.getP1().equals(point) && !line.getP2().equals(point)) {
+                    if (intersects(line, point)) {
+                        System.out.println(line.getP1().getX()+" "+line.getP1().getY() + 
+                                " " + line.getP2().getX()+ " "+line.getP2().getY() + 
+                                " пересекается с " + point.getX()+" "+ point.getY());
+                        if (!resultMap.containsKey(line)) {
+                            resultMap.put(line, value + 1);
+                        } else {
+                            resultMap.replace(line, resultMap.get(line) + 1);
+                        }
+                    }
+                }
+            });
+        });
+
+        return resultMap;
+    }
+
+    /**
+     * пересекается ли линия с точкой
+     *
+     * @param line2D линия
+     * @param p точка
+     * @return пересекается ли линия с точкой
+     */
+    private static boolean intersects(Line2D line2D, Point p) {
+        return line2D.ptLineDist(p) <= 0.01;
     }
 
 }
