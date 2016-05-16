@@ -13,8 +13,8 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.*;
 
@@ -37,7 +37,9 @@ public class CollectionTask {
         //task7();
         //System.out.println(task8("(({)})"));
         //task9();
-        task10();
+        //task10();
+        //task11(100000);
+        task12();
 
     }
 
@@ -368,6 +370,87 @@ public class CollectionTask {
             ex.printStackTrace();
         }
         map.forEach((key, val) -> System.out.println("слово: " + key + " встречается: " + val + " раз"));
+    }
+
+    /**
+     * *
+     * 11. В кругу стоят N человек, пронумерованных от 1 до N. При ведении счета
+     * по кругу вычеркивается каждый второй человек, пока не останется один.
+     * Составить две программы, моделирующие процесс. Одна из программ должна
+     * использовать класс ArrayList, а вторая – LinkedList. Какая из двух
+     * программ работает быстрее? Почему?
+     *
+     * @param n -количество человек в круге
+     */
+    private static void task11(int n) {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        for (int i = 1; i <= n; i++) {
+            arrayList.add(i);
+            linkedList.add(i);
+        }
+        long time = System.nanoTime();
+        removeEverySecondInter(arrayList);
+        System.out.println("time ArrayList: " + ((System.nanoTime() - time) / 1_000_000) + " мс");
+        time = System.nanoTime();
+        removeEverySecondInter(linkedList);
+        System.out.println("time LinkedList: " + ((System.nanoTime() - time) / 1_000_000) + " мс");
+    }
+
+    /**
+     * метод удаляем каждый второй элемент по кругу
+     *
+     * @param list
+     */
+    private static void removeEverySecondInter(List list) {
+        int firstdel = 0;
+        while (list.size() > 1) {
+            if (firstdel == 0) {
+                for (int i = 1; i < list.size(); i++) {
+                    list.remove(i);
+                }
+            } else {
+                for (int i = 0; i < list.size(); i++) {
+                    list.remove(i);
+                }
+            }
+            firstdel = list.size() % 2 == 0 ? 0 : 1;
+        }
+        System.out.println("остался: " + list.toString());
+    }
+
+    /**
+     * 12. Задан список целых чисел и число X. Не используя вспомогательных
+     * объектов и не изменяя размера списка, переставить элементы списка так,
+     * чтобы сначала шли числа, не превосходящие X, а затем числа, большие X.
+     */
+    private static void task12() {
+        System.out.println("Введите число Х");
+        int x = scn.nextInt();
+        System.out.println("Введите размер списка");
+        int n = scn.nextInt();
+        scn.close();
+        Random rnd = new Random();
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(rnd.nextInt(n));
+        }
+        //Collections.sort(list);
+        System.out.println(list.toString());
+        int tmp = 0;
+        int mem;
+        for (int i = 0; i < n; i++) {
+            if (list.get(i) < x) {
+                mem=list.get(i);
+                //list.add(tmp, list.get());
+                list.add(i, list.get(mem));
+               // list.add(i, mem);
+            }else{
+                tmp=i;
+            }
+        }
+        System.out.println(list.toString());
+
     }
 
 }
