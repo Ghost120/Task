@@ -47,7 +47,8 @@ public class CollectionTask {
         //task12();//доделать
         //task13();
         //task14();
-        task15();
+        //task15();
+        task16();
 
     }
 
@@ -506,8 +507,8 @@ public class CollectionTask {
         scn.close();
         List<Point> points = getListPoints(n);
         //System.out.println(points.toString());
-        map= getThisLineMap(points);
-       // System.out.println(points.toString());
+        map = getThisLineMap(points);
+        // System.out.println(points.toString());
 
     }
 
@@ -549,9 +550,9 @@ public class CollectionTask {
             pointList.forEach(point -> {
                 if (!line.getP1().equals(point) && !line.getP2().equals(point)) {
                     if (intersects(line, point)) {
-                        System.out.println(line.getP1().getX()+" "+line.getP1().getY() + 
-                                " " + line.getP2().getX()+ " "+line.getP2().getY() + 
-                                " пересекается с " + point.getX()+" "+ point.getY());
+                        System.out.println(line.getP1().getX() + " " + line.getP1().getY()
+                                + " " + line.getP2().getX() + " " + line.getP2().getY()
+                                + " пересекается с " + point.getX() + " " + point.getY());
                         if (!resultMap.containsKey(line)) {
                             resultMap.put(line, value + 1);
                         } else {
@@ -574,6 +575,28 @@ public class CollectionTask {
      */
     private static boolean intersects(Line2D line2D, Point p) {
         return line2D.ptLineDist(p) <= 0.01;
+    }
+
+    /**
+     * 16. На клетчатой бумаге нарисован круг. Вывести в файл описания всех
+     * клеток, целиком лежащих внутри круга, в порядке возрастания расстояния от
+     * клетки до центра круга. Использовать класс PriorityQueue.
+     */
+    private static void task16() {
+        System.out.print("Введите центр окружности\nX: ");
+        double x = scn.nextDouble();
+        System.out.print("Y: ");
+        double y = scn.nextDouble();
+        System.out.print("Введите радиус окружности\nR: ");
+        double radius = scn.nextDouble();
+        scn.close();
+        for (int i = 0; i < 4; i++) {
+
+        }
+    }
+
+    private static void getLength2Point(Point point1,Point point2) {
+        double a= Math.pow((point2.x -point1.x),2);
     }
 
 }
